@@ -111,7 +111,7 @@ CREATE TABLE Insumo (
     FOREIGN KEY (ProveedorID) REFERENCES Proveedor(ProveedorID)
 );
 
--- Vista: VistaDetalleBoleta
+-- Vista corregida: VistaDetalleBoleta
 CREATE VIEW VistaDetalleBoleta AS
 SELECT 
     b.BoletaID,
@@ -122,7 +122,6 @@ SELECT
     c.Numero AS Telefono,
     CONCAT(e.Nombre, ' ', e.Apellido) AS AtendidoPor,
     s.NombreSucursal AS NombreLavanderia,
-    NULL AS RUC,
     s.Direccion AS DireccionLavanderia,
     d.NombreDistrito AS Distrito,
     db.PrendaNombre AS Prenda,
