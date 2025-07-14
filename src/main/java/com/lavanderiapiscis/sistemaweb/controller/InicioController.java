@@ -2,6 +2,7 @@ package com.lavanderiapiscis.sistemaweb.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class InicioController {
@@ -13,8 +14,18 @@ public class InicioController {
 	
 	//creamos una ruta para el menu principal
 	
-	@GetMapping("/menuprincipal")
+	@PostMapping("/menu_principal")
 	public String MostrarMenuPrincipal() {
-		return "menuprincipal";
+		return "menu_principal";
+	}
+	
+	@GetMapping("/menu_principal")
+	public String MostrarMenuPrincipalGET() {
+		return "menu_principal";
+	}
+	
+	@GetMapping("/mantenimientos")
+	public String MostraMantenimientos() {
+		return "mantenimientos";
 	}
 }
