@@ -304,127 +304,82 @@
     </style>
 </head>
 <body>
-    <div class="floating-shapes">
-        <div class="shape">
-            <i class="fas fa-city fa-4x"></i>
+<div class="container">
+    <div class="main-container">
+        <div class="page-header mt-4 mb-3">
+            <a th:href="@{/mantenimientos}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Volver a Mantenimientos
+            </a>
+            <h1 class="page-title">Gestión de Clientes</h1>
+            <p class="page-subtitle">Administra los clientes del sistema</p>
         </div>
-        <div class="shape">
-            <i class="fas fa-map-marker-alt fa-4x"></i>
+
+        <div class="d-flex justify-content-end mb-3">
+            <a th:href="@{/mantenimientos/clientes/nuevo}" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i> Agregar Cliente
+            </a>
         </div>
-        <div class="shape">
-            <i class="fas fa-location-dot fa-4x"></i>
-        </div>
-    </div>
-    
-    <div class="container">
-        <div class="main-container">
-            <div class="page-header">
-                <a th:href="@{/mantenimientos}" class="back-button">
-                    <i class="fas fa-arrow-left"></i>
-                    Volver a Mantenimientos
-                </a>
-                <h1 class="page-title">Gestión de Distritos</h1>
-                <p class="page-subtitle">Administra los distritos donde opera la lavandería</p>
-            </div>
-            
-            <!-- Botón para agregar nuevo distrito -->
-            <div class="d-flex justify-content-end">
-                <a th:href="@{/mantenimientos/distritos/nuevo}" class="add-button">
-                    <i class="fas fa-plus"></i>
-                    Agregar Distrito
-                </a>
-            </div>
-            
-            <!-- Tabla de distritos -->
-            <div class="table-container">
-                <div class="table-header">
-                    <h3>
-                        <i class="fas fa-city me-2"></i>
-                        Lista de Distritos
-                        <span class="badge bg-light text-dark ms-2" th:text="${#lists.size(distritos)}">0</span>
-                    </h3>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <i class="fas fa-users me-2"></i>
+                    Lista de Clientes
+                    <span class="badge bg-light text-dark ms-2" th:text="${#lists.size(clientes)}">0</span>
+                </h4>
+
+                <!-- Si no hay clientes registrados -->
+                <div th:if="${#lists.isEmpty(clientes)}" class="empty-state text-center my-5">
+                    <i class="fas fa-users fa-3x mb-3"></i>
+                    <h5>No hay clientes registrados</h5>
+                    <p>Comienza agregando un nuevo cliente al sistema.</p>
                 </div>
-                
-                <div th:if="${#lists.isEmpty(distritos)}" class="empty-state">
-                    <i class="fas fa-city"></i>
-                    <h4>No hay distritos registrados</h4>
-                    <p>Comienza agregando un nuevo distrito al sistema.</p>
-                </div>
-                
-                <div th:unless="${#lists.isEmpty(distritos)}" class="table-responsive">
-                    <table class="table custom-table">
+
+                <!-- Si hay clientes registrados -->
+                <div th:unless="${#lists.isEmpty(clientes)}" class="table-responsive">
+                    <table class="table table-striped align-middle">
                         <thead>
                             <tr>
-                                <th scope="col" class="text-center">
-                                    <i class="fas fa-hashtag me-1"></i>
-                                    ID
-                                </th>
-                                <th scope="col">
-                                    <i class="fas fa-city me-1"></i>
-                                    Nombre del Distrito
-                                </th>
-                                <th scope="col" class="text-center">
-                                    <i class="fas fa-toggle-on me-1"></i>
-                                    Estado
-                                </th>
-                                <th scope="col" class="text-center">
-                                    <i class="fas fa-cogs me-1"></i>
-                                    Acciones
-                                </th>
+                                <th class="text-center">ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>DNI</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="distrito : ${distritos}">
+                            <tr th:each="cliente : ${clientes}">
+                                <td class="text-center"><strong th:text="${cliente.id}">1</strong></td>
+                                <td th:text="${cliente.nombre}">Juan</td>
+                                <td th:text="${cliente.apellido}">Pérez</td>
+                                <td th:text="${cliente.dni}">12345678</td>
                                 <td class="text-center">
-                                    <span class="fw-bold" th:text="${distrito.id}">1</span>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-                                        <span th:text="${distrito.distrito}">Nombre del Distrito</span>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <span th:if="${distrito.estado}" class="status-badge status-active">
-                                        <i class="fas fa-check-circle me-1"></i>
-                                        Activo
+                                    <span th:if="${cliente.estado}" class="badge bg-success">
+                                        <i class="fas fa-check-circle me-1"></i> Activo
                                     </span>
-                                    <span th:unless="${distrito.estado}" class="status-badge status-inactive">
-                                        <i class="fas fa-times-circle me-1"></i>
-                                        Inactivo
+                                    <span th:unless="${cliente.estado}" class="badge bg-danger">
+                                        <i class="fas fa-times-circle me-1"></i> Inactivo
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <div class="action-buttons">
-                                        <a th:href="@{/mantenimientos/distritos/editar/{id}(id=${distrito.id})}" 
-                                           class="btn-edit"
-                                           title="Editar distrito">
+                                    <div class="btn-group" role="group">
+                                        <a th:href="@{/mantenimientos/clientes/editar/{id}(id=${cliente.id})}" class="btn btn-sm btn-primary" title="Editar">
                                             <i class="fas fa-edit"></i>
-                                            Editar
                                         </a>
-                                        <form th:action="@{/mantenimientos/distritos/eliminar/{id}(id=${distrito.id})}" 
-                                              method="post" 
-                                              style="display: inline;"
-                                              onsubmit="return confirm('¿Estás seguro de que deseas eliminar este distrito?')">
-                                            <button type="submit" class="btn-delete" title="Eliminar distrito">
+                                        <form th:action="@{/mantenimientos/clientes/eliminar/{id}(id=${cliente.id})}" method="post" style="display:inline;" onsubmit="return confirm('¿Eliminar cliente?');">
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
                                                 <i class="fas fa-trash"></i>
-                                                Eliminar
                                             </button>
                                         </form>
-                                        <form th:action="@{/mantenimientos/distritos/habilitar/{id}(id=${distrito.id})}" 
-                                              method="post" 
-                                              style="display: inline;">
-                                            <button type="submit" class="btn-enable" title="Habilitar distrito">
+                                        <form th:action="@{/mantenimientos/clientes/habilitar/{id}(id=${cliente.id})}" method="post" style="display:inline;" th:if="${!cliente.estado}">
+                                            <button type="submit" class="btn btn-sm btn-success" title="Habilitar">
                                                 <i class="fas fa-check-circle"></i>
-                                                Habilitar
                                             </button>
                                         </form>
-                                        <form th:action="@{/mantenimientos/distritos/deshabilitar/{id}(id=${distrito.id})}" 
-                                              method="post" 
-                                              style="display: inline;">
-                                            <button type="submit" class="btn-disable" title="Deshabilitar distrito">
+                                        <form th:action="@{/mantenimientos/clientes/deshabilitar/{id}(id=${cliente.id})}" method="post" style="display:inline;" th:if="${cliente.estado}">
+                                            <button type="submit" class="btn btn-sm btn-warning" title="Deshabilitar">
                                                 <i class="fas fa-times-circle"></i>
-                                                Deshabilitar
                                             </button>
                                         </form>
                                     </div>
@@ -433,34 +388,34 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            
-            <!-- Información adicional -->
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <i class="fas fa-chart-bar fa-2x text-primary mb-2"></i>
-                            <h5 class="card-title">Total de Distritos</h5>
-                            <p class="card-text display-6 fw-bold" th:text="${#lists.size(distritos)}">0</p>
+
+                <!-- Resumen de cantidad de clientes -->
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="card text-center shadow-sm">
+                            <div class="card-body">
+                                <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                                <h5>Total de Clientes</h5>
+                                <p class="display-6 fw-bold" th:text="${#lists.size(clientes)}">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card text-center shadow-sm">
+                            <div class="card-body">
+                                <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                                <h5>Clientes Activos</h5>
+                                <p class="display-6 fw-bold" th:text="${#lists.size(#lists.select(clientes, c -> c.estado))}">0</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body text-center">
-                            <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
-                            <h5 class="card-title">Distritos Activos</h5>
-                            <p class="card-text display-6 fw-bold" th:text="${#lists.size(#lists.select(distritos, distrito.estado))}">0</p>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+</div>
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

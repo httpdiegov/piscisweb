@@ -26,11 +26,8 @@ public class ProveedorModel implements Serializable{
 	@Id
 	@Column(name = "ProveedorID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	
-	@ManyToOne
-	@JoinColumn(name = "BoletaID", nullable = false)
-	private BoletaModel boleta;
+	private Integer id;
+
 	
 	@Column(name = "RUC", length = 11, nullable = false, unique = true)
 	private String ruc;

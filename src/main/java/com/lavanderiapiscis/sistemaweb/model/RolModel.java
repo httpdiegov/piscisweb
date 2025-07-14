@@ -25,7 +25,7 @@ public class RolModel implements Serializable{
 	@Id
 	@Column(name = "RolID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Column(name = "NombreRol", length = 20, nullable = false, unique = false)
 	private String nombreRol;
@@ -33,8 +33,10 @@ public class RolModel implements Serializable{
 	@Column(name = "Descripcion", length = 200, nullable = false, unique = false)
 	private String descripcion;
 	
+	@Builder.Default
 	@Column(name = "Estado", nullable = false, unique = true)
-	private boolean estado;
+	private boolean estado = true;
+
 	
 	
 

@@ -26,7 +26,7 @@ public class ClienteModel implements Serializable{
 	@Id
 	@Column(name = "ClienteID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Column(name = "Nombre", length = 20, nullable = false, unique = false)
 	private String nombre;
@@ -38,7 +38,7 @@ public class ClienteModel implements Serializable{
 	private String dni;
 	
 	@Column(name = "Numero", length = 9, nullable = false, unique = false)
-	private int numero;
+	private Integer numero;
 	
 	@Column(name = "Estado", nullable = false, unique = false)
 	private boolean estado;

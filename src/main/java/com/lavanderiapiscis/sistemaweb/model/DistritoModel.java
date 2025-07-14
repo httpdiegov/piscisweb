@@ -26,7 +26,7 @@ public class DistritoModel implements Serializable{
 	@Id
 	@Column(name = "DistritoID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Column(name = "NombreDistrito", length = 50, nullable = false, unique = false)
 	private String distrito;

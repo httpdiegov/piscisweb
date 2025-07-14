@@ -26,7 +26,7 @@ public class InsumoModel implements Serializable {
     @Id
     @Column(name = "InsumoID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "ProveedorID", nullable = false)

@@ -29,11 +29,13 @@ public class SucursalModel implements Serializable{
 	@Id
 	@Column(name = "SucursalID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
+	@Builder.Default
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DistritoID", nullable = false)
-	private DistritoModel distrito;
+	private DistritoModel distrito = new DistritoModel();
+
 	
 	@Column(name = "NombreSucursal", length = 50, nullable = false, unique = false)
 	private String nombreSucursal;
