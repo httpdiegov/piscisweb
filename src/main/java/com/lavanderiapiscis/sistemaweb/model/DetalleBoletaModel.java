@@ -1,6 +1,9 @@
 package com.lavanderiapiscis.sistemaweb.model;
 
 import java.io.Serializable;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,10 +42,9 @@ public class DetalleBoletaModel implements Serializable{
 	private String prendaNombre;
 	
 	@Column(name = "Peso", nullable = true, unique = false)
-	private double peso;
+	private Double peso;
 	
 	@Column(name = "Precio", nullable = true, unique = false)
 	private double precio;
-
 
 }

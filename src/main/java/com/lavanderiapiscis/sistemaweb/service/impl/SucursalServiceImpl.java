@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lavanderiapiscis.sistemaweb.model.DistritoModel;
 import com.lavanderiapiscis.sistemaweb.model.SucursalModel;
+import com.lavanderiapiscis.sistemaweb.repository.DistritoRepository;
 import com.lavanderiapiscis.sistemaweb.repository.SucursalRepository;
 import com.lavanderiapiscis.sistemaweb.service.SucursalService;
 
@@ -15,6 +17,9 @@ public class SucursalServiceImpl implements SucursalService {
 
     @Autowired
     private SucursalRepository sucursalRepository;
+    
+    @Autowired
+    private DistritoRepository distritoRepository;
 
     @Override
     public List<SucursalModel> findAll() {
@@ -34,12 +39,25 @@ public class SucursalServiceImpl implements SucursalService {
 
     @Override
     public SucursalModel update(SucursalModel obj, int id) {
-        // Se asegura de que la sucursal existe antes de intentar actualizar
         Optional<SucursalModel> optional = sucursalRepository.findById(id);
         if (optional.isPresent()) {
             SucursalModel existing = optional.get();
             existing.setNombreSucursal(obj.getNombreSucursal());
             existing.setDireccion(obj.getDireccion());
+            existing.setEstado(obj.isEstado());
+
+            if (obj.getDistrito() != null && obj.getDistrito().getId() != null) {
+                Optional<DistritoModel> optionalDistrito = distritoRepository.findById(obj.getDistrito().getId());
+                if (optionalDistrito.isPresent()) {
+                    existing.setDistrito(optionalDistrito.get());
+                } else {
+                    System.err.println("Distrito con ID " + obj.getDistrito().getId() + " no encontrado.");
+                }
+            } else {
+                throw new RuntimeException("Distrito es obligatorio para la sucursal.");
+            }
+
+            // Save the updated existing entity
             return sucursalRepository.save(existing);
         }
         throw new RuntimeException("Sucursal no encontrada con ID: " + id);

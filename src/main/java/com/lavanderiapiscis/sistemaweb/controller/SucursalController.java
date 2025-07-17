@@ -16,6 +16,9 @@ public class SucursalController {
 
     @Autowired
     private SucursalService sucursalService;
+    
+    @Autowired
+    private DistritoService distritoService; 
 
     @GetMapping("/sucursales")
     public String mostrarSucursales(Model model) {
@@ -29,13 +32,12 @@ public class SucursalController {
         return "sucursal/sucursales";
     }
 
-    @Autowired
-    private DistritoService distritoService; // asegúrate de tener este servicio
+
 
     @GetMapping("/mantenimientos/sucursales/nuevo")
     public String mostrarFormularioNuevaSucursal(Model model) {
         model.addAttribute("nuevaSucursal", new SucursalModel());
-        model.addAttribute("distritos", distritoService.findAll()); // pasa la lista de distritos
+        model.addAttribute("distritos", distritoService.findAll()); 
         return "sucursal/nuevaSucursal";
     }
 
@@ -59,6 +61,8 @@ public class SucursalController {
                 return "redirect:/sucursales";
             }
             model.addAttribute("sucursal", sucursal);
+            model.addAttribute("distritos", distritoService.findAll());
+
             return "sucursal/editarSucursal";
         } catch (Exception e) {
             model.addAttribute("error", "Error al cargar la sucursal: " + e.getMessage());
@@ -69,6 +73,7 @@ public class SucursalController {
     @PostMapping("/mantenimientos/sucursales/editar/{id}")
     public String actualizarSucursal(@PathVariable int id, @ModelAttribute SucursalModel sucursal, Model model) {
         try {
+            sucursal.setId(id);
             sucursalService.update(sucursal, id);
             return "redirect:/sucursales";
         } catch (Exception e) {
