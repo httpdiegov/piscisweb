@@ -48,7 +48,6 @@ public class BoletaServiceImpl implements BoletaService {
         boletaExistente.setSucursal(boletaActualizada.getSucursal());
         boletaExistente.setFechaEmision(boletaActualizada.getFechaEmision());
         boletaExistente.setFechaEntrega(boletaActualizada.getFechaEntrega());
-        boletaExistente.setEstado(boletaActualizada.isEstado());
         boletaExistente.setTotal(boletaActualizada.getTotal());
 
         // Aquí es importante manejar bien los detalles:
@@ -66,21 +65,18 @@ public class BoletaServiceImpl implements BoletaService {
     @Override
     public BoletaModel delete(int id) {
         BoletaModel boleta = boletaRepository.findById(id).orElseThrow();
-        boleta.setEstado(false);  // Cambia su estado a false (inactivo)
         return boletaRepository.save(boleta);
     }
 
     @Override
     public BoletaModel enable(int id) {
         BoletaModel boleta = boletaRepository.findById(id).orElseThrow();
-        boleta.setEstado(true);
         return boletaRepository.save(boleta);
     }
 
     @Override
     public BoletaModel disable(int id) {
         BoletaModel boleta = boletaRepository.findById(id).orElseThrow();
-        boleta.setEstado(false);
         return boletaRepository.save(boleta);
     }
 }

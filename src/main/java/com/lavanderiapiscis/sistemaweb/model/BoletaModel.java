@@ -51,8 +51,7 @@ public class BoletaModel implements Serializable{
 	@Column(name = "FechaEntrega", nullable = false, unique = false)
 	private LocalDate fechaEntrega;
 	
-	@Column(name = "Estado", nullable = false, unique = false)
-	private boolean estado;
+	
 	
 	@Column(name = "Total", nullable = false, unique = false)
 	private double total;
