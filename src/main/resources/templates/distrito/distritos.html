@@ -411,22 +411,28 @@
                                                 Eliminar
                                             </button>
                                         </form>
-                                        <form th:action="@{/mantenimientos/distritos/habilitar/{id}(id=${distrito.id})}" 
-                                              method="post" 
-                                              style="display: inline;">
-                                            <button type="submit" class="btn-enable" title="Habilitar distrito">
-                                                <i class="fas fa-check-circle"></i>
-                                                Habilitar
-                                            </button>
-                                        </form>
-                                        <form th:action="@{/mantenimientos/distritos/deshabilitar/{id}(id=${distrito.id})}" 
-                                              method="post" 
-                                              style="display: inline;">
-                                            <button type="submit" class="btn-disable" title="Deshabilitar distrito">
-                                                <i class="fas fa-times-circle"></i>
-                                                Deshabilitar
-                                            </button>
-                                        </form>
+										<!-- Mostrar solo si distrito está inactivo -->
+										<form th:if="${!distrito.estado}"
+										      th:action="@{/mantenimientos/distritos/habilitar/{id}(id=${distrito.id})}" 
+										      method="post" 
+										      style="display: inline;">
+										    <button type="submit" class="btn-enable" title="Habilitar distrito">
+										        <i class="fas fa-check-circle"></i>
+										        Habilitar
+										    </button>
+										</form>
+
+										<!-- Mostrar solo si distrito está activo -->
+										<form th:if="${distrito.estado}"
+										      th:action="@{/mantenimientos/distritos/deshabilitar/{id}(id=${distrito.id})}" 
+										      method="post" 
+										      style="display: inline;">
+										    <button type="submit" class="btn-disable" title="Deshabilitar distrito">
+										        <i class="fas fa-times-circle"></i>
+										        Deshabilitar
+										    </button>
+										</form>
+
                                     </div>
                                 </td>
                             </tr>
@@ -451,7 +457,10 @@
                         <div class="card-body text-center">
                             <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
                             <h5 class="card-title">Distritos Activos</h5>
-                            <p class="card-text display-6 fw-bold" th:text="${#lists.size(#lists.select(distritos, distrito.estado))}">0</p>
+							<!-- Mostrar cantidad de distritos activos -->
+							<p class="display-6 fw-bold" th:text="${#lists.size(distritos.?[estado])}">0</p>
+
+
                         </div>
                     </div>
                 </div>

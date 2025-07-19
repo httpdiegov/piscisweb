@@ -99,28 +99,32 @@
             <!-- Tabla de detalles -->
             <h5 class="mb-3">Detalles de la Boleta</h5>
             <div class="table-responsive mb-4">
-                <table class="table table-bordered table-striped align-middle text-center">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Prenda</th>
-                            <th>Tipo Cobro</th>
-                            <th>Cantidad</th>
-                            <th>Peso (kg)</th>
-                            <th>Precio Unitario</th>
-                            <th>Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="detalle : ${detalles}">
-                            <td th:text="${detalle.prenda}"></td>
-                            <td th:text="${detalle.tipoCobro}"></td>
-                            <td th:text="${detalle.cantidad}"></td>
-                            <td th:text="${detalle.peso}"></td>
-                            <td th:text="${detalle.precioUnitario}"></td>
-                            <td th:text="${detalle.subtotal}"></td>
-                        </tr>
-                    </tbody>
-                </table>
+				<table class="table table-bordered table-striped align-middle text-center">
+				  <thead class="table-light">
+				    <tr>
+				      <th>Prenda</th>
+				      <th>Tipo Cobro</th>
+				      <th>Cantidad</th>
+				      <th>Peso (kg)</th>
+				      <th>Precio Unitario</th>
+				      <th>Subtotal</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr th:each="detalle : ${detalles}">
+				      <td th:text="${detalle.prenda}"></td>
+				      <td th:text="${detalle.tipoCobro}"></td>
+				      <td th:text="${detalle.cantidad}"></td>
+				      <td th:text="${detalle.peso}"></td>
+				      <td>
+				        <span th:if="${detalle.tipoCobro == 'unidad'}" th:text="${detalle.precioUnitario}"></span>
+				        <span th:if="${detalle.tipoCobro == 'kilo'}">-</span>
+				      </td>
+				      <td th:text="${detalle.subtotal}"></td>
+				    </tr>
+				  </tbody>
+				</table>
+
             </div>
 
             <!-- Totales -->

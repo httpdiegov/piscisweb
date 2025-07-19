@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @Entity
+@IdClass(VistaDetalleBoletaId.class)  // Aquí indicas la clase que define la clave compuesta
 @Table(name = "VistaDetalleBoleta")
 public class VistaDetalleBoletaModel implements Serializable {
 
@@ -19,6 +20,10 @@ public class VistaDetalleBoletaModel implements Serializable {
     @Id
     @Column(name = "BoletaID")
     private int boletaId;
+
+    @Id
+    @Column(name = "DetalleID")
+    private int detalleID;
 
     @Column(name = "FechaEmision")
     private LocalDate fechaEmision;

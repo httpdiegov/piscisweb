@@ -34,6 +34,28 @@ public class BoletaServiceImpl implements BoletaService {
 
     @Override
     public BoletaModel add(BoletaModel boleta) {
+        double precioPorKilo = 4.0;
+        double total = 0.0;
+
+        if (boleta.getDetalles() != null) {
+            for (DetalleBoletaModel detalle : boleta.getDetalles()) {
+                // Establecer relación boleta-detalle
+                detalle.setBoleta(boleta);
+
+                // Calcular el precio si el tipo de cobro es por kilo
+                if ("kilo".equalsIgnoreCase(detalle.getTipoCobro())) {
+                    double peso = detalle.getPeso() != null ? detalle.getPeso() : 0.0;
+                    double precio = peso * precioPorKilo;
+                    detalle.setPrecio(precio);
+                    total += precio;
+                } else if ("unidad".equalsIgnoreCase(detalle.getTipoCobro())) {
+                    total += detalle.getPrecio();
+                    detalle.setPeso(null); // Aseguramos que el peso no quede con valor si es por unidad
+                }
+            }
+        }
+
+        boleta.setTotal(total);
         return boletaRepository.save(boleta);
     }
 
@@ -42,21 +64,40 @@ public class BoletaServiceImpl implements BoletaService {
         BoletaModel boletaExistente = boletaRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Boleta no encontrada"));
 
-        // Actualiza los campos que quieras (cliente, empleado, sucursal, fechas, estado, total, etc)
+        // Actualiza campos principales
         boletaExistente.setCliente(boletaActualizada.getCliente());
         boletaExistente.setEmpleado(boletaActualizada.getEmpleado());
         boletaExistente.setSucursal(boletaActualizada.getSucursal());
         boletaExistente.setFechaEmision(boletaActualizada.getFechaEmision());
         boletaExistente.setFechaEntrega(boletaActualizada.getFechaEntrega());
-        boletaExistente.setTotal(boletaActualizada.getTotal());
 
-        // Aquí es importante manejar bien los detalles:
-        // Eliminar detalles antiguos si ya no están, agregar los nuevos y actualizar los existentes
+        // Limpiar detalles antiguos
         boletaExistente.getDetalles().clear();
-        boletaActualizada.getDetalles().forEach(detalle -> {
-            detalle.setBoleta(boletaExistente); // relacionar detalle con la boleta existente
+
+        double total = 0.0;
+
+        // Procesar nuevos detalles
+        for (DetalleBoletaModel detalle : boletaActualizada.getDetalles()) {
+            detalle.setBoleta(boletaExistente); // Enlaza el detalle con la boleta
+
+            // Calcular el precio según tipoCobro
+            if ("kilo".equalsIgnoreCase(detalle.getTipoCobro())) {
+                if (detalle.getPeso() != null) {
+                    detalle.setPrecio(detalle.getPeso() * 4); // Precio por kilo
+                } else {
+                    detalle.setPrecio(0); // o puedes lanzar una excepción si el peso es obligatorio
+                }
+            } else {
+                // Si no es por kilo, usar el precio que viene o asegurarse de que no sea nulo
+                detalle.setPrecio(detalle.getPrecio() != 0 ? detalle.getPrecio() : 0);
+            }
+
+            total += detalle.getPrecio(); // Acumula el total
+
             boletaExistente.getDetalles().add(detalle);
-        });
+        }
+
+        boletaExistente.setTotal(total);
 
         return boletaRepository.save(boletaExistente);
     }

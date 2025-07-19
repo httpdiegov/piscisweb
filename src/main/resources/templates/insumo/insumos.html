@@ -404,7 +404,7 @@
                             <div class="card-body">
                                 <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
                                 <h5>Insumos Activos</h5>
-                                <p class="display-6 fw-bold" th:text="${#lists.size(#lists.select(insumos, i -> i.estado))}">0</p>
+								<p th:text="${#lists.size(insumos.?[estado])}">0</p>
                             </div>
                         </div>
                     </div>
