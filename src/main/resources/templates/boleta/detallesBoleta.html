@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Detalle de Boleta</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .main-container {
+            background: #fff;
+            border-radius: 15px;
+            padding: 2.5rem;
+            max-width: 1000px;
+            margin: auto;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+        }
+
+        .info-pair {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1f1f1;
+            padding: 0.5rem 0;
+        }
+
+        .info-pair:last-child {
+            border: none;
+        }
+
+        .table th {
+            background-color: #f0f0f0;
+        }
+
+        .summary-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .summary-card p {
+            margin: 0.3rem 0;
+            font-size: 1.1rem;
+        }
+
+        .btn-back {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="main-container">
+
+        <a th:href="@{/mantenimientos/boletas}" class="btn btn-secondary btn-sm btn-back">
+            <i class="fas fa-arrow-left me-1"></i> Volver a Boletas
+        </a>
+
+        <h1 class="page-title">Detalle de Boleta</h1>
+
+        <div th:if="${!#lists.isEmpty(detalles)}">
+
+            <!-- Datos generales -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="info-pair"><strong>Cliente:</strong> <span th:text="${detalles[0].nombreCliente}"></span></div>
+                    <div class="info-pair"><strong>DNI:</strong> <span th:text="${detalles[0].dniCliente}"></span></div>
+                    <div class="info-pair"><strong>Teléfono:</strong> <span th:text="${detalles[0].telefono}"></span></div>
+                    <div class="info-pair"><strong>Empleado:</strong> <span th:text="${detalles[0].atendidoPor}"></span></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-pair"><strong>Sucursal:</strong> <span th:text="${detalles[0].nombreLavanderia}"></span></div>
+                    <div class="info-pair"><strong>Dirección:</strong> <span th:text="${detalles[0].direccionLavanderia}"></span></div>
+                    <div class="info-pair"><strong>Distrito:</strong> <span th:text="${detalles[0].distrito}"></span></div>
+                    <div class="info-pair"><strong>F. Emisión:</strong> <span th:text="${detalles[0].fechaEmision}"></span></div>
+                    <div class="info-pair"><strong>F. Entrega:</strong> <span th:text="${detalles[0].fechaEntrega}"></span></div>
+                </div>
+            </div>
+
+            <!-- Tabla de detalles -->
+            <h5 class="mb-3">Detalles de la Boleta</h5>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Prenda</th>
+                            <th>Tipo Cobro</th>
+                            <th>Cantidad</th>
+                            <th>Peso (kg)</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="detalle : ${detalles}">
+                            <td th:text="${detalle.prenda}"></td>
+                            <td th:text="${detalle.tipoCobro}"></td>
+                            <td th:text="${detalle.cantidad}"></td>
+                            <td th:text="${detalle.peso}"></td>
+                            <td th:text="${detalle.precioUnitario}"></td>
+                            <td th:text="${detalle.subtotal}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Totales -->
+            <div class="summary-card text-end">
+                <p><strong>Total:</strong> S/ <span th:text="${detalles[0].total}"></span></p>
+                <p><strong>IGV:</strong> S/ <span th:text="${detalles[0].igv}"></span></p>
+                <p><strong>Total con IGV:</strong> <strong>S/ <span th:text="${detalles[0].totalConIGV}"></span></strong></p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -4,10 +4,13 @@ import com.lavanderiapiscis.sistemaweb.model.BoletaModel;
 import com.lavanderiapiscis.sistemaweb.model.ClienteModel;
 import com.lavanderiapiscis.sistemaweb.model.EmpleadoModel;
 import com.lavanderiapiscis.sistemaweb.model.SucursalModel;
+import com.lavanderiapiscis.sistemaweb.model.VistaDetalleBoletaModel;
 import com.lavanderiapiscis.sistemaweb.service.BoletaService;
 import com.lavanderiapiscis.sistemaweb.service.ClienteService;
 import com.lavanderiapiscis.sistemaweb.service.EmpleadoService;
 import com.lavanderiapiscis.sistemaweb.service.SucursalService;
+import com.lavanderiapiscis.sistemaweb.service.VistaDetalleBoletaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +33,10 @@ public class BoletaController {
 
     @Autowired
     private SucursalService sucursalService;
+    
+    @Autowired
+    private VistaDetalleBoletaService vistaDetalleBoletaService;
+
 
     @GetMapping("/mantenimientos/boletas")
     public String mostrarBoletas(Model model) {
@@ -99,5 +106,13 @@ public class BoletaController {
     public String deshabilitarBoleta(@PathVariable int id) {
         boletaService.disable(id);
         return "redirect:/mantenimientos/boletas";
+    }
+    
+    
+    @GetMapping("/mantenimientos/boletas/ver-detalles/{id}")
+    public String verDetallesBoleta(@PathVariable("id") int id, Model model) {
+        List<VistaDetalleBoletaModel> detalles = vistaDetalleBoletaService.obtenerDetallesPorBoletaId(id);
+        model.addAttribute("detalles", detalles);
+        return "boleta/detallesBoleta"; // vista HTML
     }
 }
