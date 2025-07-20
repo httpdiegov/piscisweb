@@ -73,6 +73,7 @@ CREATE TABLE Boleta (
     FechaEmision DATE NOT NULL,
     FechaEntrega DATE NOT NULL,
     Total DECIMAL(10,2) NOT NULL,
+    Estado BOOLEAN NOT NULL,
     FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID),
     FOREIGN KEY (EmpleadoID) REFERENCES Empleado(EmpleadoID),
     FOREIGN KEY (SucursalID) REFERENCES Sucursal(SucursalID)
